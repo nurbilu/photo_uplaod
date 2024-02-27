@@ -38,7 +38,12 @@ export function Task() {
         loadData();
     }, []);
 
+    const deleteTask = (taskId) => {
+        dispatch(deleteTaskAsync(taskId));
+    };
+
     const updateTask = (taskId, updatedData) => {
+        console.log(updatedData);
         dispatch(updateTaskAsync({ id: taskId, ...updatedData }));
     };
 
@@ -52,9 +57,9 @@ export function Task() {
                 tasks.map(task => <div onChange={loadData}>
                     {task.title},
                     {task.description}
-                    <img alt='' style={{ width: "200px" }} src={MY_SERVER + '/static/images/' + task.image } />
-                    <button onClick={() => dispatch(deleteTaskAsync(task.id))}>Delete</button>
-                    <button onClick={() => updateTask(task.id, { title: 'Updated Title' })}>Update</button>
+                    <img alt='' style={{ width: "200px" }} src={MY_SERVER + '/images/' + task.image } />
+                    <button onClick={() => deleteTask(task.id)}>Delete</button>
+                    <button onClick={() => updateTask(task.id, task.title)}>Update</button>
                 </div>
                 )
             }

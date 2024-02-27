@@ -24,7 +24,7 @@ export const fetchTasksAsync = createAsyncThunk(
 
   export const deleteTaskAsync = createAsyncThunk(
     'task/deleteTask',
-    async (id, thunkAPI) => {
+    async (id) => {
       const response = await deleteTask(id);
       return response;
     }
