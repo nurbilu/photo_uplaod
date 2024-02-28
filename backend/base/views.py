@@ -24,6 +24,23 @@ def getImages(request):
                 }) #append row by to row to res list
     return Response(res) #return array as json response
 
+@api_view(['DELETE','GET'])
+def delImg(request,id):
+    img=Task.objects.get(id=id)
+    img.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+    
+@api_view(['PUT', 'OPTIONS'])  
+def updImg(request,id):
+    try:
+        img=Task.objects.get(id=id)
+        img.title=request.data['title']
+        img.description=request.data['description']
+        img.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)  
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 class APIViews(APIView):
     parser_class=(MultiPartParser,FormParser)
     def post(self,request,*args,**kwargs):
@@ -36,23 +53,6 @@ class APIViews(APIView):
             print('error',api_serializer.errors)
             return Response(api_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
-
-    def delete(self, request, pk):
-        my_model = Task.objects.get(pk=pk)
-        my_model.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-        
-    def put(self,request,*args,**kwargs):
-        try:
-            img=Task.objects.get(id=request.data['id'])
-            img.title=request.data['title']
-            img.description=request.data['description']
-            img.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-    
-
 
 @api_view(['GET'])
 def index(req):

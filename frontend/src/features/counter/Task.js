@@ -1,21 +1,18 @@
-import React, { useState , useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addTaskAsync } from './taskSlice';
 import axios from 'axios';
-import { fetchTasksAsync ,deleteTaskAsync,updateTaskAsync} from './taskSlice';
+import { fetchTasksAsync, deleteTaskAsync, updateTaskAsync } from './taskSlice';
 export function Task() {
     const MY_SERVER = "http://127.0.0.1:8000";
     // const count = useSelector(selectCount);
     const dispatch = useDispatch();
-    const [incrementAmount, setIncrementAmount] = useState('2');
-
-    const incrementValue = Number(incrementAmount) || 0;
     const [title, settitle] = useState("")
     const [content, setcontent] = useState("")
-    
+
     const [img, setimg] = useState(null)
     const [tasks, settasks] = useState([])
-    
+
 
     const addstudent = () => {
         const formData = new FormData();
@@ -38,12 +35,12 @@ export function Task() {
         loadData();
     }, []);
 
-    const deleteTask = (taskId) => {
+    const deleteTask =  (taskId) => {
         dispatch(deleteTaskAsync(taskId));
     };
 
     const updateTask = (taskId, updatedData) => {
-        console.log(updatedData);
+        // console.log(updatedData);
         dispatch(updateTaskAsync({ id: taskId, ...updatedData }));
     };
 
@@ -52,21 +49,25 @@ export function Task() {
         dispatch(fetchTasksAsync());
     }, [dispatch]);
     return (
-        <div className="App">
-            {       
-                tasks.map(task => <div onChange={loadData}>
-                    {task.title},
-                    {task.description}
-                    <img alt='' style={{ width: "200px" }} src={MY_SERVER + '/images/' + task.image } />
-                    <button onClick={() => deleteTask(task.id)}>Delete</button>
-                    <button onClick={() => updateTask(task.id, task.title)}>Update</button>
-                </div>
-                )
+        <div className="App" >
+
+            {
+                tasks.map(task => (
+                    <div key={task.id} onChange={loadData} key={task.id} task={task} onDelete={handleDelete} onUpdate={handleUpdate} >
+                        {task.title},
+                        {task.description}
+                        <img alt='' style={{ width: "200px" }} src={MY_SERVER + '/images/' + task.image} />
+                        <button onClick={() => deleteTask(task.id)}>Delete</button>
+                        <button onClick={() => updateTask(task.id, task.title)}>Update</button>
+                    </div>
+                ))
             }
-            <button onClick={() => addstudent()}>Add</button>
-            title:<input onChange={(e) => settitle(e.target.value)} />
-            content:<input onChange={(e) => setcontent(e.target.value)} />
-            spic:<input type="file" onChange={(e) => handleImgUpl(e.target.files)} />
+            <div>
+                <button onClick={() => addstudent()}>Add</button>
+                title:<input onChange={(e) => settitle(e.target.value)} />
+                content:<input onChange={(e) => setcontent(e.target.value)} />
+                spic:<input type="file" onChange={(e) => handleImgUpl(e.target.files)} />
+            </div>
         </div>
     );
 }

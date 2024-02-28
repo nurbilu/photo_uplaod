@@ -1,4 +1,11 @@
-# error backend :
+# errors and progress record and readme : 
+## CODE CHANGES : 
+    delete in views.py is now delImg
+    put " ------------------- " updImg
+    
+
+
+## ERROS BECKEND AND FRONTEND :
     main keywords to look for :
         - Broken pipe
         - how to fix undifend id 
