@@ -35,7 +35,12 @@ export function Task() {
         loadData();
     }, []);
 
-    const deleteTask =  (taskId) => {
+    // Existing useEffect for loadData
+    useEffect(() => {
+        dispatch(fetchTasksAsync());
+    }, [dispatch]);
+
+    const deleteTask = (taskId) => {
         dispatch(deleteTaskAsync(taskId));
     };
 
@@ -44,21 +49,21 @@ export function Task() {
         dispatch(updateTaskAsync({ id: taskId, ...updatedData }));
     };
 
-    // Existing useEffect for loadData
-    useEffect(() => {
-        dispatch(fetchTasksAsync());
-    }, [dispatch]);
+
+
+    //  fix handleDelete and handleUpdate to use the async/await pattern
+
     return (
         <div className="App" >
 
             {
                 tasks.map(task => (
-                    <div key={task.id} onChange={loadData} key={task.id} task={task} onDelete={handleDelete} onUpdate={handleUpdate} >
+                    <div key={task.id} onChange={loadData}>
                         {task.title},
                         {task.description}
                         <img alt='' style={{ width: "200px" }} src={MY_SERVER + '/images/' + task.image} />
                         <button onClick={() => deleteTask(task.id)}>Delete</button>
-                        <button onClick={() => updateTask(task.id, task.title)}>Update</button>
+                        <button onClick={() => updateTask(task.id, task.title, task.content)}>Update</button>
                     </div>
                 ))
             }

@@ -11,12 +11,11 @@ export function fetchTasks(formData) {
 }
 
 export const deleteTask = async (id) => {
-    const response = await axios.delete(`${MY_SERVER}delImg/${id}/`);
-    return response.data;
+    console.log(`Deleting task with ID: ${id}`);
+    return await axios.delete(`${MY_SERVER}delImg/${id}/`);
 };
 
-
-export const updateTask = async (id, data) => {
-    const response = await axios.put(`updImg${id}/`, data);
-    return response.data;
+export const updateTask = async (id, formData) => {
+    console.log("Updating task with ID:", id); 
+    return await axios.put(`${MY_SERVER}/updImg/${id}/`, formData);
 };
